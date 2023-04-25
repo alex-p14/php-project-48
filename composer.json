@@ -11,7 +11,7 @@
             "Hexlet\\Code\\": "src/"
         },
         "files": [
-            "src/help.php"
+            "src/differ.php"
         ]
     },
     "authors": [
