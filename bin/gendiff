@@ -13,6 +13,29 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
-use function Difference\Calculator\Help\output;
+use function Difference\Calculator\Differ\genDiff;
 
-output();
+$doc = <<<DOC
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
+
+Options:
+  -h --help                        Show this screen
+  -v --version                     Show version
+  --format <fmt>                   Report format [default: stylish]
+
+DOC;
+
+$args = \Docopt::handle($doc, array('version'=>'gendiff 1.0'));
+foreach ($args as $k=>$v) {
+    echo $k.': '.json_encode($v).PHP_EOL;
+}
+
+$file1 = $args['<firstFile>'];
+$file2 = $args['<secondFile>'];
+
+$diff = gendiff($file1, $file2);
