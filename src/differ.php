@@ -1,26 +1,46 @@
 <?php
 
-namespace Difference\Calculator\Help;
+namespace Difference\Calculator\Differ;
 
-function output()
+function arraySort(array $item): array
 {
-    $doc = <<<DOC
-    Generate diff
-    
-    Usage:
-      gendiff (-h|--help)
-      gendiff (-v|--version)
-      gendiff [--format <fmt>] <firstFile> <secondFile>
-    
-    Options:
-      -h --help                        Show this screen
-      -v --version                     Show version
-      --format <fmt>                   Report format [default: stylish]
+    ksort($item);
+    return $item;
+}
 
-    DOC;
-    
-    $args = \Docopt::handle($doc, array('version'=>'gendiff 1.0'));
-    foreach ($args as $k=>$v) {
-        echo $k.': '.json_encode($v).PHP_EOL;
+function strValue(mixed $value): string
+{
+    if (is_bool($value)) {
+        return $value ? 'true' : 'false';
     }
+    return $value;
+}
+
+function genDiff(string $path1, string $path2)
+{
+    $json1 = json_decode(file_get_contents($path1), true);
+    $json2 = json_decode(file_get_contents($path2), true);
+
+    $test = "{\n" . implode(
+        "\n", array_map(
+            function ($key) use ($json1, $json2) {
+                $status1 = array_key_exists($key, $json1);
+                $status2 = array_key_exists($key, $json2);
+
+                if ($status1 && $status2) {
+                    if ($json1[$key] === $json2[$key]) {
+                        return '    ' . $key . ': ' . strValue($json1[$key]);
+                    }
+                    $f = '  - ' . $key . ': ' . strValue($json1[$key]) . "\n";
+                    $s = '  + ' . $key . ': ' . strValue($json2[$key]);
+                    return $f . $s;
+                } elseif ($status1) {
+                    return '  - ' . $key . ': ' . strValue($json1[$key]);
+                }
+                return '  + ' . $key . ': ' . strValue($json2[$key]);
+            }, array_keys(arraySort(array_merge($json1, $json2)))
+        )
+    ) . "\n}\n";
+
+    print_r($test);
 }
