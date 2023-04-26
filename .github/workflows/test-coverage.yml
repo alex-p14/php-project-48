@@ -1,0 +1,26 @@
+name: test-coverage
+
+# on – определяет события, которые запускают воркфлоу
+on: push
+jobs:
+  # build – произвольно выбранное имя задания
+  # их может быть больше одного
+  build:
+    runs-on: ubuntu-latest
+    # список шагов, которые надо выполнить
+    steps:
+      - name: Install
+        run: make install
+      - name: Run linter
+        run: make lint
+      - name: Run tests
+        run: make test
+      - name: Run test & publish code coverage
+        uses: paambaati/codeclimate-action@v4.0.0
+        # Add Code Climate secret key
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make test-coverage
+          coverageLocations: ${{github.workplace}}/build/logs/clover.xml:clover
+          debug: true
