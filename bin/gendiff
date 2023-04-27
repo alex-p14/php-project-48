@@ -31,11 +31,14 @@ Options:
 DOC;
 
 $args = \Docopt::handle($doc, array('version'=>'gendiff 1.0'));
-foreach ($args as $k=>$v) {
-    echo $k.': '.json_encode($v).PHP_EOL;
+
+$formatFile = $args['--format'];
+$firstPath = realpath($args['<firstFile>']);
+$secondPath = realpath($args['<secondFile>']);
+
+if ($firstPath && $secondPath) {
+    $diff = gendiff($firstPath, $secondPath);
+    print_r($diff);
+} else {
+    print_r('ERROR!' . PHP_EOL . 'Incorect file paths passed.' . PHP_EOL);
 }
-
-$file1 = $args['<firstFile>'];
-$file2 = $args['<secondFile>'];
-
-$diff = gendiff($file1, $file2);
