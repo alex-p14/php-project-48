@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     # список шагов, которые надо выполнить
     steps:
+        # Клонируем репозиторий
       - uses: actions/checkout@v3
       - name: Install
         run: make install
