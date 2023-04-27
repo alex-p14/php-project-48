@@ -11,3 +11,5 @@
 * ___Composer 2.5.4 or never___
 
 ### *Asciinema:*
+* _first_start_:
+[![asciicast](https://asciinema.org/a/lpbZCKcJZaQGJPFtKVtqqbZBz.svg)](https://asciinema.org/a/lpbZCKcJZaQGJPFtKVtqqbZBz)
