@@ -20,7 +20,7 @@ class DifferTest extends TestCase
               + verbose: true
             }
             EOD,
-             gendiff('./tests/file1.json', './tests/file2.json')
-            );
+            gendiff('./tests/file1.json', './tests/file2.json')
+        );
     }
 }
