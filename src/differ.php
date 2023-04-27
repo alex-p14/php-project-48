@@ -16,13 +16,14 @@ function strValue(mixed $value): string
     return $value;
 }
 
-function genDiff(string $path1, string $path2)
+function genDiff(string $path1, string $path2): string
 {
     $json1 = json_decode(file_get_contents($path1), true);
     $json2 = json_decode(file_get_contents($path2), true);
 
     $test = "{\n" . implode(
-        "\n", array_map(
+        "\n",
+        array_map(
             function ($key) use ($json1, $json2) {
                 $status1 = array_key_exists($key, $json1);
                 $status2 = array_key_exists($key, $json2);
@@ -38,9 +39,10 @@ function genDiff(string $path1, string $path2)
                     return '  - ' . $key . ': ' . strValue($json1[$key]);
                 }
                 return '  + ' . $key . ': ' . strValue($json2[$key]);
-            }, array_keys(arraySort(array_merge($json1, $json2)))
+            },
+            array_keys(arraySort(array_merge($json1, $json2)))
         )
-    ) . "\n}\n";
+    ) . "\n}";
 
-    print_r($test);
+    return $test;
 }
