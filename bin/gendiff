@@ -38,7 +38,7 @@ $secondPath = realpath($args['<secondFile>']);
 
 if ($firstPath && $secondPath) {
     $diff = gendiff($firstPath, $secondPath);
-    print_r($diff);
+    print_r($diff . PHP_EOL);
 } else {
     print_r('ERROR!' . PHP_EOL . 'Incorect file paths passed.' . PHP_EOL);
 }
